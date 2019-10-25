@@ -75,22 +75,8 @@ var questionsList = [
     }
 ];
 // create the data attr in every correct option 
-setTimeout(function(){
-for ( var i  = 0; i < questionsList.length; i++) {
-        var newDiv = $("<div>");
-        var optionsDiv= $("<div>")
-        newDiv.append("<p>" + questionsList[i].q);
-        newDiv.attr("data-correct", questionsList[i].correct);
-        // newDiv.append(questions); 
-        $("#questions").append(newDiv);  
 
-        optionsDiv.append("<p>" + questionsList[i].a1 + "<p>" + questionsList[i].a2 + "<p>" + questionsList[i].a3);
-        ;
-        // newDiv.append(questions); 
-        $("#options").append(optionsDiv); 
 
-}; 
-}, 3000);
 
 // button.attr({
 //     "class": "character", "type": "button", "id": array[i].id, "data-interval": array[i].interval, "data-attack": array[i].attack, "data-damage": array[i].damage
@@ -98,14 +84,29 @@ for ( var i  = 0; i < questionsList.length; i++) {
 // }) 
 
 // for (var i = 0; i < questions.length; i++) {
-    console.log(questions[0]); 
-    $("#questions").append("<p>"  + questions[1].q2); 
-  
+    
 
     // console.log(questions[2]); 
    // Start the Game 
     $("#start").on("click", function () {
-        $("#start").remove();          
+        $("#start").remove();     
+        
+        for ( var i  = 0; i < questionsList.length; i++) {
+            var newDiv = $("<div>");
+            var optionsDiv= $("<div>")
+            newDiv.append("<p>" + questionsList[i].q);
+            newDiv.attr("data-correct", questionsList[i].correct);
+            // newDiv.append(questions); 
+            $("#questions").append(newDiv);  
+           
+    
+            optionsDiv.append("<button>" + questionsList[i].a1 + "<button>" + questionsList[i].a2 + "<button>" + questionsList[i].a3);
+            ;
+            // newDiv.append(questions); 
+            $("#options").append(optionsDiv); 
+           
+    }; 
+    
     }); 
             
         
