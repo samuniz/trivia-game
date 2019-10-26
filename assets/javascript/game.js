@@ -90,22 +90,25 @@ $("#start").on("click", function () {
     }, 3000);
     setTimeout(function(){
         $("#gameQuestions").css("display", "block");
-    }, 3300);        
+        displayQuestion()
+    }, 3300);  
+          
 
 });
 
 
 // start the clock 
-$("#start").on("click", startClock);
+
 
 // Display one question at time
 function displayQuestion() {
     if (questionsCounter < (questionsList.length)) {
+        startClock(); 
         questionsCounter++;
         $("#questions").text(questionsList[(questionsCounter-1)].q);
-        $(".a1").text(questionsList[(questionsCounter-1)].a1);
-        $(".a2").text(questionsList[(questionsCounter-1)].a2);
-        $(".a3").text(questionsList[(questionsCounter-1)].a3);
+        $("#a1").text(questionsList[(questionsCounter-1)].a1);
+        $("#a2").text(questionsList[(questionsCounter-1)].a2);
+        $("#a3").text(questionsList[(questionsCounter-1)].a3);
     }
     else if (questionsCounter == questionsList.length) {
         $(".card-body").hide();
@@ -114,7 +117,8 @@ function displayQuestion() {
 };
 
 // Function that compares user choice to correct answer
-$("button").on("click", function(){
+$(".options").on("click", function(){
+    stopClock(); 
     displayQuestion(); 
 var userChoice = $(this).text();
 console.log(userChoice);
