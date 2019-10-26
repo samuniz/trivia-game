@@ -1,5 +1,5 @@
 // @ts-nocheck
-var questionscounter = 0;
+var questionsCounter = 0;
 var clockRunning = false
 var intervalId;
 var timer = 0;
@@ -11,15 +11,15 @@ var questionsList = [
         a1: "Jack ",
         a2: "John ",
         a3: "Jerry ",
-        correct: "Jack",
-        active: true
+        c: "Jack",
+
     },
     {
         q: "Which american city holds the largest Halloween Parade in the United States?",
         a1: "Salem,MA",
         a2: "New York, NY",
         a3: "Denver, CO",
-        correct: "New York, NY",
+        c: "New York, NY",
 
     },
     {
@@ -27,21 +27,21 @@ var questionsList = [
         a1: "1991",
         a2: "1996",
         a3: "1993",
-        correct: "1993",
+        c: "1993",
     },
     {
         q: "What's the most popular candy for Halloween?",
         a1: "Candy Corn",
         a2: "Chocolate",
         a3: "Gummy Bear",
-        correct: "Chocolate",
+        c: "Chocolate",
     },
     {
         q: "What's the meaning of Dracula ?",
         a1: "Son of Evil",
         a2: "Son of Darkness",
         a3: "Father of Evil",
-        correct: "Son of Evil",
+        c: "Son of Evil",
 
     },
     {
@@ -49,136 +49,175 @@ var questionsList = [
         a1: "Kansas",
         a2: "Texas",
         a3: "Alabama",
-        correct: "Alabama",
+        c: "Alabama",
     },
     {
         q: "Who was the first actor to play Wolf Man?",
         a1: "Lon Chaney",
         a2: "Benicio Del Toro",
         a3: "Antony Hopkins",
-        correct: "Lon Chaney",
+        c: "Lon Chaney",
     },
     {
         q: "Who wrote the novel Frankenstein?",
         a1: "Agatha Christie",
         a2: "Mary Shelley",
         a3: "Stephen King",
-        correct: "Mary Shelley",
+        c: "Mary Shelley",
     },
     {
         q: "Which actor played Dr. Frank-n-Furter in The Rocky Horror Picture Show?",
         a1: "Tim Curry",
         a2: "Richard O'Brien",
         a3: "Peter Hinwood",
-        correct: "Tim Curry",
+        c: "Tim Curry",
     },
     {
         q: "Which of these Halloween films was NOT directed by Tim Burton?",
         a1: "Beetlejuice",
         a2: "The Nightmare Before Christmas",
         a3: "Corpse Bride",
-        correct: "The Nightmare Before Christmas"
+        c: "The Nightmare Before Christmas"
     }
 ];
-// create the data attr in every correct option 
 
-
-
-
-
+// start the game
 $("#start").on("click", function () {
-    $("#start").remove();
-    $("#questions").css("display", "block")
-    startGame(); 
+    $("#start").remove()
+    $(".card-body").css("display", "block");
+    displayQuestion();
 });
 
 
+// start the clock 
+$("#start").on("click", startClock);
+
+// // Display the first questions and the first options
+// $("#questions").text(questionsList[questionsCounter].q );
+// $(".a1").text(questionsList[questionsCounter].a1);
+// $(".a2").text(questionsList[questionsCounter].a2);
+// $(".a3").text(questionsList[questionsCounter].a3);
 
 
-function startGame() {
-    for (var i = 0; i < questionsList.length; i++) {
-        var newDiv = $("<div style='display:none' id='" + i + "'>");
-    
-        if (questionsList[i].active == true) {
-            newDiv = $("<div style='display: block' id='" + i + "'>");
-        }
-    
-        newDiv.append("<p>" + questionsList[i].q + "</p>");
-        newDiv.attr("data-correct", questionsList[i].correct);
-    
-        var optionsDiv = $("<div>")
-        optionsDiv.append("<button onclick=clickButton(" + i + ")>" + questionsList[i].a1 + "<button onclick=clickButton(" + i + ")>" + questionsList[i].a2 + "<button onclick=clickButton(" + i + ")>" + questionsList[i].a3);
-    
-        newDiv.append(optionsDiv);
-    
-        $("#questions").append(newDiv);
-    
-    };
-    
+
+// Display one question at time
+function displayQuestion() {
+    if (questionsCounter < (questionsList.length)) {
+        questionsCounter++;
+        $("#questions").text(questionsList[(questionsCounter-1)].q);
+        $(".a1").text(questionsList[(questionsCounter-1)].a1);
+        $(".a2").text(questionsList[(questionsCounter-1)].a2);
+        $(".a3").text(questionsList[(questionsCounter-1)].a3);
+    }
+    else if (questionsCounter == questionsList.length) {
+        $(".card-body").hide();
+        $("timer").stopClock();
+    }
+};
+
+// Function that compares user choice to correct answer
+$("button").on("click", function(){
+    displayQuestion(); 
+
+var userChoice = $(this).text();
+console.log(userChoice);
+if (userChoice == questionsList[questionsCounter].c) {
+    score++
+    console.log(score);
 
 }
-// runs thru each questions and when user clicks the buttons move to the next question
-function clickButton(id) {
-    questionsList.forEach(function (question) {
-        if (question.active == true) {
-            questionsList[id].answer = event.currentTarget.innerText;
-            question.active = false;
-            questionsList[id + 1].active = true;
-            document.getElementById(id).style.display = 'none';
-            document.getElementById(id + 1).style.display = 'block';
-        }
-    })
-    console.log(questionsList[id])
-}
+}); 
 
 
-    function start() {
-        time = 10;
-        $("#timer").text("00:10");
-        console.log(time)
-        if (!clockRunning) {
-            intervalId = setInterval(count, 1000);
-            clockRunning = true;
-        }else{
-            clearInterval(intervalId);
-        }
-        
-    }
-    
-    function count() {
-        time--;
-        var converted = timeConverter(time);
-        console.log(converted);
-        $("#timer").text(converted);
-        if (time === 0) {
-            stop();
-            $("#q_a").hide();
-            $("#noTime").css("display", "block")
-        }
-    }
-    function stop() {
-        
+
+
+/* ============CLOCK FUNCTIONS=============== */
+// start the clock
+function startClock() {
+    time = 10;
+    $("#timer").text("00:10");
+    console.log(time)
+    if (!clockRunning) {
+        intervalId = setInterval(count, 1000);
+        clockRunning = true;
+    } else {
         clearInterval(intervalId);
-        clockRunning = false;
-        var converted = timeConverter(time);
-        console.log(converted)
-        $("#stopTime").text(converted);
     }
-    function timeConverter(t) {
-    
-        var minutes = Math.floor(t / 60);
-        var seconds = t - (minutes * 60);
-    
-        if (seconds < 10) {
-            seconds = "0" + seconds;
-        }
-    
-        if (minutes === 0) {
-            minutes = "00";
-        }
-        else if (minutes < 10) {
-            minutes = "0" + minutes;
-        }
-    
-        return minutes + ":" + seconds;
+
+}
+// make the clock cound
+function count() {
+    time--;
+    var converted = timeConverter(time);
+    // console.log(converted);
+    $("#timer").text(converted);
+    if (time === 0) {
+        stop();
+        $("#q_a").hide();
+        $("#noTime").css("display", "block")
+    };
+}
+// stop the clock
+function stopClock() {
+
+    clearInterval(intervalId);
+    clockRunning = false;
+    var converted = timeConverter(time);
+    console.log(converted)
+    $("#stopTime").text(converted);
+}
+// convert time on clock
+function timeConverter(t) {
+
+    var minutes = Math.floor(t / 60);
+    var seconds = t - (minutes * 60);
+
+    if (seconds < 10) {
+        seconds = "0" + seconds;
     }
+
+    if (minutes === 0) {
+        minutes = "00";
+    }
+    else if (minutes < 10) {
+        minutes = "0" + minutes;
+    }
+
+    return minutes + ":" + seconds;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+// function startGame() {
+
+//         var newDiv = $("<div id='" + i + "'>");
+
+//         if (questionsList[i].active == true) {
+//             newDiv = $("<div id='" + i + "'>");
+//         }
+
+//         newDiv.append("<p>" + questionsList[i].q + "</p>");
+//         newDiv.attr("data-correct", questionsList[i].correct);
+
+//         var optionsDiv = $("<div>")
+//         optionsDiv.append("<button onclick=clickButton(" + i + ")>" + questionsList[i].a1 + "<button onclick=clickButton(" + i + ")>" + questionsList[i].a2 + "<button onclick=clickButton(" + i + ")>" + questionsList[i].a3);
+
+//         newDiv.append(optionsDiv);
+
+//         $("#questions").append(newDiv);
+
+
+
+
+// }
+
+
