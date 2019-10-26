@@ -1,13 +1,18 @@
 // @ts-nocheck
-var questionscounter= 0; 
-var timer = 0; 
+var questionscounter = 0;
+var clockRunning = false
+var intervalId;
+var timer = 0;
 var score = 0;
+var time = 0;
 var questionsList = [
-    {   q: "Who name the first Jack O Lantern?",
+    {
+        q: "Who name the first Jack O Lantern?",
         a1: "Jack ",
         a2: "John ",
         a3: "Jerry ",
-        correct: "Jack"
+        correct: "Jack",
+        active: true
     },
     {
         q: "Which american city holds the largest Halloween Parade in the United States?",
@@ -15,6 +20,7 @@ var questionsList = [
         a2: "New York, NY",
         a3: "Denver, CO",
         correct: "New York, NY",
+
     },
     {
         q: "Which year the movie Hocus Pokus released?",
@@ -78,43 +84,101 @@ var questionsList = [
 
 
 
-// button.attr({
-//     "class": "character", "type": "button", "id": array[i].id, "data-interval": array[i].interval, "data-attack": array[i].attack, "data-damage": array[i].damage
 
-// }) 
 
-// for (var i = 0; i < questions.length; i++) {
+$("#start").on("click", function () {
+    $("#start").remove();
+    $("#questions").css("display", "block")
+    startGame(); 
+});
+
+
+
+
+function startGame() {
+    for (var i = 0; i < questionsList.length; i++) {
+        var newDiv = $("<div style='display:none' id='" + i + "'>");
+    
+        if (questionsList[i].active == true) {
+            newDiv = $("<div style='display: block' id='" + i + "'>");
+        }
+    
+        newDiv.append("<p>" + questionsList[i].q + "</p>");
+        newDiv.attr("data-correct", questionsList[i].correct);
+    
+        var optionsDiv = $("<div>")
+        optionsDiv.append("<button onclick=clickButton(" + i + ")>" + questionsList[i].a1 + "<button onclick=clickButton(" + i + ")>" + questionsList[i].a2 + "<button onclick=clickButton(" + i + ")>" + questionsList[i].a3);
+    
+        newDiv.append(optionsDiv);
+    
+        $("#questions").append(newDiv);
+    
+    };
     
 
-    // console.log(questions[2]); 
-   // Start the Game 
-    $("#start").on("click", function () {
-        $("#start").remove();     
+}
+// runs thru each questions and when user clicks the buttons move to the next question
+function clickButton(id) {
+    questionsList.forEach(function (question) {
+        if (question.active == true) {
+            questionsList[id].answer = event.currentTarget.innerText;
+            question.active = false;
+            questionsList[id + 1].active = true;
+            document.getElementById(id).style.display = 'none';
+            document.getElementById(id + 1).style.display = 'block';
+        }
+    })
+    console.log(questionsList[id])
+}
+
+
+    function start() {
+        time = 10;
+        $("#timer").text("00:10");
+        console.log(time)
+        if (!clockRunning) {
+            intervalId = setInterval(count, 1000);
+            clockRunning = true;
+        }else{
+            clearInterval(intervalId);
+        }
         
-        for ( var i  = 0; i < questionsList.length; i++) {
-            var newDiv = $("<div>");
-            var optionsDiv= $("<div>")
-            newDiv.append("<p>" + questionsList[i].q);
-            newDiv.attr("data-correct", questionsList[i].correct);
-            // newDiv.append(questions); 
-            $("#questions").append(newDiv);  
-           
+    }
     
-            optionsDiv.append("<button>" + questionsList[i].a1 + "<button>" + questionsList[i].a2 + "<button>" + questionsList[i].a3);
-            ;
-            // newDiv.append(questions); 
-            $("#options").append(optionsDiv); 
-           
-    }; 
-    
-    }); 
-            
+    function count() {
+        time--;
+        var converted = timeConverter(time);
+        console.log(converted);
+        $("#timer").text(converted);
+        if (time === 0) {
+            stop();
+            $("#q_a").hide();
+            $("#noTime").css("display", "block")
+        }
+    }
+    function stop() {
         
+        clearInterval(intervalId);
+        clockRunning = false;
+        var converted = timeConverter(time);
+        console.log(converted)
+        $("#stopTime").text(converted);
+    }
+    function timeConverter(t) {
     
-
-    // var userChoice = $(this).text();
-    // console.log(userChoice);
-    // if (userChoice === questions[questionIndex].correct) {
-    //     correct++;
-    //     }
-// Display Questions on HTML
+        var minutes = Math.floor(t / 60);
+        var seconds = t - (minutes * 60);
+    
+        if (seconds < 10) {
+            seconds = "0" + seconds;
+        }
+    
+        if (minutes === 0) {
+            minutes = "00";
+        }
+        else if (minutes < 10) {
+            minutes = "0" + minutes;
+        }
+    
+        return minutes + ":" + seconds;
+    }

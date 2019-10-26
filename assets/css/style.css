@@ -5,3 +5,7 @@ button{
     background-color: rebeccapurple;
     font-family: 'Creepster', cursive;
 }
+
+#questions{
+    display: none; 
+}
