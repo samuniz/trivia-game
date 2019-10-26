@@ -17,7 +17,10 @@ button{
     font-family: 'Creepster', cursive;
 }
 
+.card{
+    border: none; 
+}
 
-.card-body{
+#gameQuestions, #showtime{
     display: none; 
 }

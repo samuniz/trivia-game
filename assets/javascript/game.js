@@ -84,21 +84,19 @@ var questionsList = [
 // start the game
 $("#start").on("click", function () {
     $("#start").remove()
-    $(".card-body").css("display", "block");
-    displayQuestion();
+    $("#showtime").css("display", "block");
+    setTimeout(function(){
+        $("#showtime").css("display", "none");
+    }, 3000);
+    setTimeout(function(){
+        $("#gameQuestions").css("display", "block");
+    }, 3300);        
+
 });
 
 
 // start the clock 
 $("#start").on("click", startClock);
-
-// // Display the first questions and the first options
-// $("#questions").text(questionsList[questionsCounter].q );
-// $(".a1").text(questionsList[questionsCounter].a1);
-// $(".a2").text(questionsList[questionsCounter].a2);
-// $(".a3").text(questionsList[questionsCounter].a3);
-
-
 
 // Display one question at time
 function displayQuestion() {
@@ -118,7 +116,6 @@ function displayQuestion() {
 // Function that compares user choice to correct answer
 $("button").on("click", function(){
     displayQuestion(); 
-
 var userChoice = $(this).text();
 console.log(userChoice);
 if (userChoice == questionsList[questionsCounter].c) {
