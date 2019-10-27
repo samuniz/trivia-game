@@ -83,21 +83,22 @@ var questionsList = [
     }
 ];
 
+
 // start the game
 $("#start").on("click", function () {
-    $("#start").remove()
-    $("#showtime").css("display", "block");
+    $("#start").remove(); 
+   
+    $("#showtime").show();
     setTimeout(function(){
-        $("#showtime").css("display", "none");
+        $("#showtime").hide();
     }, 3000);
     setTimeout(function(){
-        $("#gameQuestions").css("display", "block");
+        $("#gameQuestions").show();
         displayQuestion()
     }, 3300);  
           
 
 });
-
 
 // Display one question at time
 function displayQuestion() {
@@ -108,56 +109,43 @@ function displayQuestion() {
         $("#a1").text(questionsList[(questionsCounter-1)].a1);
         $("#a2").text(questionsList[(questionsCounter-1)].a2);
         $("#a3").text(questionsList[(questionsCounter-1)].a3);
+        
        
-       
- 
     }
-    else if (questionsCounter == questionsList.length) {
-        $(".card-body").hide();
+    else if (questionsCounter === questionsList.length) {
+        $("#gameQuestions").hide();
         $("timer").stopClock();
     }
 };
-if (questionsCounter < (questionsList.length)){
 
-}; 
-// after player press .options button, display the giff and if user got wrong or right.
-
-
-//  I can reuse the questions card on html and display the gif and the text. Giff on options div and text on question div or I can just hide the whole card and display a second card 
+ 
 $(".options").on("click", function(){ 
+  
     stopClock();
-    displayQuestion(); 
-    $("#gameQuestions").hide();  
-    stopClock();
+    displayQuestion();  
+    $("#gif").attr("src", `assets/images/${questionsCounter-1}.gif`);
+    $("#gif").show(); 
+    $("#gameQuestions").hide();    
+    setTimeout(function(){  
+        $("#gif").hide();      
+        }, 3000);   
     setTimeout(function(){
     startClock();   
-    $("#gameQuestions").css("display", "block");     
-    }, 3000);          
+    $("#gameQuestions").css("display", "block");      
+    }, 3300); 
+    
+    var userChoice = $(this).text();
+    console.log(userChoice);
+    if (userChoice == questionsList[questionsCounter].c) {
+    score++
+    console.log(score); 
+    }         
+  
 });
 
 
-// $(".options").on("click", function(){
+  
     
-// });
-
-
-// Function that compares user choice to correct answer
-$(".options").on("click", function(){
-    var gifs = $("#gif").attr("src", `assets/images/${questionsCounter +1}.gif`)
-    $(".funny").css("display", "block");  
-    setTimeout(function(){
-    $(".funny").hide();     
-    }, 3000);      
-
-
-var userChoice = $(this).text();
-console.log(userChoice);
-if (userChoice == questionsList[questionsCounter].c) {
-    score++
-    console.log(score);
-
-}
-}); 
 
 
 
