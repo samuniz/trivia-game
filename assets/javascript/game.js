@@ -1,10 +1,12 @@
 // @ts-nocheck
 var questionsCounter = 0;
+
 var clockRunning = false
 var intervalId;
 var timer = 0;
 var score = 0;
 var time = 0;
+
 var questionsList = [
     {
         q: "Who name the first Jack O Lantern?",
@@ -97,9 +99,6 @@ $("#start").on("click", function () {
 });
 
 
-// start the clock 
-
-
 // Display one question at time
 function displayQuestion() {
     if (questionsCounter < (questionsList.length)) {
@@ -109,17 +108,48 @@ function displayQuestion() {
         $("#a1").text(questionsList[(questionsCounter-1)].a1);
         $("#a2").text(questionsList[(questionsCounter-1)].a2);
         $("#a3").text(questionsList[(questionsCounter-1)].a3);
+       
+       
+ 
     }
     else if (questionsCounter == questionsList.length) {
         $(".card-body").hide();
         $("timer").stopClock();
     }
 };
+if (questionsCounter < (questionsList.length)){
+
+}; 
+// after player press .options button, display the giff and if user got wrong or right.
+
+
+//  I can reuse the questions card on html and display the gif and the text. Giff on options div and text on question div or I can just hide the whole card and display a second card 
+$(".options").on("click", function(){ 
+    stopClock();
+    displayQuestion(); 
+    $("#gameQuestions").hide();  
+    stopClock();
+    setTimeout(function(){
+    startClock();   
+    $("#gameQuestions").css("display", "block");     
+    }, 3000);          
+});
+
+
+// $(".options").on("click", function(){
+    
+// });
+
 
 // Function that compares user choice to correct answer
 $(".options").on("click", function(){
-    stopClock(); 
-    displayQuestion(); 
+    var gifs = $("#gif").attr("src", `assets/images/${questionsCounter +1}.gif`)
+    $(".funny").css("display", "block");  
+    setTimeout(function(){
+    $(".funny").hide();     
+    }, 3000);      
+
+
 var userChoice = $(this).text();
 console.log(userChoice);
 if (userChoice == questionsList[questionsCounter].c) {
@@ -146,18 +176,7 @@ function startClock() {
     }
 
 }
-// make the clock cound
-function count() {
-    time--;
-    var converted = timeConverter(time);
-    // console.log(converted);
-    $("#timer").text(converted);
-    if (time === 0) {
-        stop();
-        $("#q_a").hide();
-        $("#noTime").css("display", "block")
-    };
-}
+
 // stop the clock
 function stopClock() {
 
@@ -165,8 +184,10 @@ function stopClock() {
     clockRunning = false;
     var converted = timeConverter(time);
     console.log(converted)
-    $("#stopTime").text(converted);
+    //  $("#stopTime").text(converted);
 }
+
+
 // convert time on clock
 function timeConverter(t) {
 
@@ -185,7 +206,20 @@ function timeConverter(t) {
     }
 
     return minutes + ":" + seconds;
-}
+};
+
+// make the clock count
+function count() {
+    time--;
+    var converted = timeConverter(time);
+    // console.log(converted);
+    $("#timer").text(converted);
+    if (time === 0) {
+        stopClock();
+        $("#gameQuestions").hide();
+        // $("#noTime").css("display", "block")
+    };
+};
 
 
 
