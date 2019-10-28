@@ -2,6 +2,8 @@ body{
     background: url("../images/background.webp"); 
     background-size: cover;
     height: auto; 
+    font-family: 'Creepster', cursive;
+    font-size: 30px;
 }
 .card{
     margin: 15%; 
@@ -23,4 +25,38 @@ button{
 
 #gameQuestions, #showtime, #message, #final, #again, #timeOut{
     display: none; 
+}
+
+button{
+    height: 100px;   
+    font-size: 42px; 
+    width: 25%; 
+    margin: 0 35%; 
+    border-radius: 25px;
+    
+}
+img{
+    margin: 0 30%; 
+    border: 2px solid rebeccapurple; 
+}
+
+.card{
+    margin: 0 10%; 
+    text-align: center;
+    background-color: #FF7E00;
+}
+
+.buttons-container{
+    display: inline;
+}
+
+.options{
+   display: inline; 
+   margin: 1% 1%; 
+   font-size: 30px; 
+}
+p{
+    text-align: center;
+    font-size: 40px;
+    color: rebeccapurple;
 }

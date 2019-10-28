@@ -90,6 +90,10 @@ $("#start").on("click", function () {
     $("#start").hide();
     $("#again").hide();
     $("#showtime").show();
+    $("#final").hide();
+    score = 0;
+    questionsCounter = 0;
+    
     setTimeout(function () {
         $("#showtime").hide();
     }, 3000);
@@ -110,7 +114,7 @@ function displayQuestion() {
             $("#gif").hide();
         }, 3000);
         setTimeout(function () {
-            $("score").text(score); 
+            $("#score").text(score); 
             $("#gameQuestions").hide();
             $("#final").show();
         }, 3300);
