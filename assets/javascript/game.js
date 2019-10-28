@@ -1,6 +1,6 @@
 // @ts-nocheck
 var questionsCounter = 0;
-
+var userGuess;
 var clockRunning = false
 var intervalId;
 var timer = 0;
@@ -82,35 +82,34 @@ var questionsList = [
         c: "The Nightmare Before Christmas"
     }
 ];
+// Display the first questions and the first options
 
 
 // start the game
 $("#start").on("click", function () {
-    $("#start").remove(); 
-   
+    $("#start").remove();
+
     $("#showtime").show();
-    setTimeout(function(){
+    setTimeout(function () {
         $("#showtime").hide();
     }, 3000);
-    setTimeout(function(){
+    setTimeout(function () {
         $("#gameQuestions").show();
-        displayQuestion()
-    }, 3300);  
-          
+
+    }, 3300);
+    displayQuestion();
 
 });
 
 // Display one question at time
 function displayQuestion() {
     if (questionsCounter < (questionsList.length)) {
-        startClock(); 
+        startClock();
         questionsCounter++;
-        $("#questions").text(questionsList[(questionsCounter-1)].q);
-        $("#a1").text(questionsList[(questionsCounter-1)].a1);
-        $("#a2").text(questionsList[(questionsCounter-1)].a2);
-        $("#a3").text(questionsList[(questionsCounter-1)].a3);
-        
-       
+        $("#questions").text(questionsList[questionsCounter - 1].q);
+        $("#a1").text(questionsList[questionsCounter - 1].a1);
+        $("#a2").text(questionsList[questionsCounter - 1].a2);
+        $("#a3").text(questionsList[questionsCounter - 1].a3);
     }
     else if (questionsCounter === questionsList.length) {
         $("#gameQuestions").hide();
@@ -118,34 +117,44 @@ function displayQuestion() {
     }
 };
 
- 
-$(".options").on("click", function(){ 
-  
-    stopClock();
-    displayQuestion();  
-    $("#gif").attr("src", `assets/images/${questionsCounter-1}.gif`);
-    $("#gif").show(); 
-    $("#gameQuestions").hide();    
-    setTimeout(function(){  
-        $("#gif").hide();      
-        }, 3000);   
-    setTimeout(function(){
-    startClock();   
-    $("#gameQuestions").css("display", "block");      
-    }, 3300); 
+$(".options").on("click", function () {
     
+    stopClock();
+    $("#gif").attr("src", `assets/images/${questionsCounter}.gif`);
+    // $("#message").text("You got " + " !"); 
+    $("#gameQuestions").hide();
     var userChoice = $(this).text();
-    console.log(userChoice);
-    if (userChoice == questionsList[questionsCounter].c) {
-    score++
-    console.log(score); 
-    }         
+
+    if (questionsList[(questionsCounter - 1)].c === userChoice) {
+        score++
+        userGuess = "right";
+    }
+    else {
+        userGuess = "wrong";
+    };
+    $("#userGuess").text(userGuess);
+    $("#message").show();
+    $("#gif").show();
   
+
+
+    setTimeout(function () {
+        $("#gif").hide();
+        $("#message").hide();
+    }, 3000);
+    setTimeout(function () {
+        startClock();
+        $("#gameQuestions").css("display", "block");
+    }, 3300);
+    //  compare user guess with correct answer and uptade the score.
+    
+    console.log(userGuess);
+    console.log(score);
+    displayQuestion();
 });
 
 
-  
-    
+
 
 
 
@@ -155,7 +164,6 @@ $(".options").on("click", function(){
 function startClock() {
     time = 10;
     $("#timer").text("00:10");
-    console.log(time)
     if (!clockRunning) {
         intervalId = setInterval(count, 1000);
         clockRunning = true;
@@ -171,7 +179,7 @@ function stopClock() {
     clearInterval(intervalId);
     clockRunning = false;
     var converted = timeConverter(time);
-    console.log(converted)
+
     //  $("#stopTime").text(converted);
 }
 

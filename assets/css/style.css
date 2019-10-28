@@ -21,6 +21,6 @@ button{
     border: none; 
 }
 
-#gameQuestions, #showtime {
+#gameQuestions, #showtime, #message {
     display: none; 
 }
