@@ -88,14 +88,13 @@ var questionsList = [
 // start the game
 $("#start").on("click", function () {
     $("#start").remove();
-
     $("#showtime").show();
     setTimeout(function () {
         $("#showtime").hide();
     }, 3000);
     setTimeout(function () {
         $("#gameQuestions").show();
-
+        startClock(); 
     }, 3300);
     displayQuestion();
 
@@ -103,26 +102,45 @@ $("#start").on("click", function () {
 
 // Display one question at time
 function displayQuestion() {
-    if (questionsCounter < (questionsList.length)) {
-        startClock();
+    if (questionsCounter >= questionsList.length) {
+        $("#gameQuestions").hide();
+        setTimeout(function () {
+            $("#gif").hide();
+        }, 3000);
+        setTimeout(function () {
+            $("#message").hide()
+            $("#gameQuestions").hide();
+            $("#final").show();
+        }, 3300);
+        setTimeout(function () {
+            $("#final").hide();
+            $("#again").show();
+            $("#star").show(); 
+        }, 6000);
+    }
+    else if (questionsCounter < (questionsList.length)) {
+        // startClock();
         questionsCounter++;
         $("#questions").text(questionsList[questionsCounter - 1].q);
         $("#a1").text(questionsList[questionsCounter - 1].a1);
         $("#a2").text(questionsList[questionsCounter - 1].a2);
         $("#a3").text(questionsList[questionsCounter - 1].a3);
-    }
-    else if (questionsCounter === questionsList.length) {
-        $("#gameQuestions").hide();
-        $("timer").stopClock();
-    }
+    }    
 };
 
 $(".options").on("click", function () {
-    
-    stopClock();
     $("#gif").attr("src", `assets/images/${questionsCounter}.gif`);
-    // $("#message").text("You got " + " !"); 
     $("#gameQuestions").hide();
+    setTimeout(function () {
+        stopClock();     
+        $("#gif").hide();
+        $("#message").hide();
+    }, 3000);
+    setTimeout(function () {   
+        $("#gameQuestions").show();
+        startClock(); 
+        
+    }, 3300);
     var userChoice = $(this).text();
 
     if (questionsList[(questionsCounter - 1)].c === userChoice) {
@@ -132,24 +150,10 @@ $(".options").on("click", function () {
     else {
         userGuess = "wrong";
     };
+
     $("#userGuess").text(userGuess);
     $("#message").show();
     $("#gif").show();
-  
-
-
-    setTimeout(function () {
-        $("#gif").hide();
-        $("#message").hide();
-    }, 3000);
-    setTimeout(function () {
-        startClock();
-        $("#gameQuestions").css("display", "block");
-    }, 3300);
-    //  compare user guess with correct answer and uptade the score.
-    
-    console.log(userGuess);
-    console.log(score);
     displayQuestion();
 });
 
@@ -250,5 +254,3 @@ function count() {
 
 
 // }
-
-
