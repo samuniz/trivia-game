@@ -87,7 +87,8 @@ var questionsList = [
 
 // start the game
 $("#start").on("click", function () {
-    $("#start").remove();
+    $("#start").hide();
+    $("#again").hide();
     $("#showtime").show();
     setTimeout(function () {
         $("#showtime").hide();
@@ -102,20 +103,21 @@ $("#start").on("click", function () {
 
 // Display one question at time
 function displayQuestion() {
+    
     if (questionsCounter >= questionsList.length) {
         $("#gameQuestions").hide();
         setTimeout(function () {
             $("#gif").hide();
         }, 3000);
         setTimeout(function () {
-            $("#message").hide()
+            $("score").text(score); 
             $("#gameQuestions").hide();
             $("#final").show();
         }, 3300);
         setTimeout(function () {
             $("#final").hide();
             $("#again").show();
-            $("#star").show(); 
+            $("#start").show(); 
         }, 6000);
     }
     else if (questionsCounter < (questionsList.length)) {
@@ -217,6 +219,12 @@ function count() {
     if (time === 0) {
         stopClock();
         $("#gameQuestions").hide();
+        $("#timeOut").show();
+        setTimeout(function () {
+            $("#timeOut").hide();
+            $("#gameQuestions").show();
+        }, 3300);
+        displayQuestion();
         // $("#noTime").css("display", "block")
     };
 };
